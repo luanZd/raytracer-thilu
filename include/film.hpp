@@ -1,11 +1,13 @@
 
 #include <vector>
 
-class film
+class Film
 {
 private:
     /* data */
+    int width{0}, height{0};
+    std::vector<Color> pixel_buffer;
+
 public:
-    film(/* args */);
-    ~film();
+    Film(int w, int h);
 };
