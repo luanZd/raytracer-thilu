@@ -3,6 +3,7 @@
 
 struct RunningOpt
 {
+  std::string infile;
   bool help = false;
   std::string outfile;
   bool quick_render = false;
