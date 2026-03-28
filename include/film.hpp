@@ -24,5 +24,3 @@ public:
     int get_width() const { return width; }
     int get_height() const { return height; }
 };
-
-#endif
