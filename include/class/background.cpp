@@ -1,4 +1,11 @@
 #include "../background.hpp" 
+/* Recebe 4 cores de estrutura, chama o vector de colors. 
+A estrutura do vetor é assim:
+colors = {[r,g,b], [r,g,b], [r,g,b], [r,g,b]}
+corners é a mesma coisa, serve apenas para diferenciar se ele está localizado no canto ou não.
+Verifique a .hpp para saber mais
+
+*/
 
 Background::Background(const std::vector<Color>& colors) {
     if (colors.size() == 4) {
@@ -11,7 +18,7 @@ Background::Background(const std::vector<Color>& colors) {
 
 Color Background::lerp(const Color &A, const Color &B, float t) const {
     Color resultado;
-    
+    //É necessario fazer a interpolação de cada cor por vez.
     resultado.r = A.r * (1.0f - t) + B.r * t;
     
     resultado.g = A.g * (1.0f - t) + B.g * t;
