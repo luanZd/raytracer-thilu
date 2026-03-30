@@ -26,7 +26,7 @@ y=2 |  8  |  9  | 10  | 11  |
     +-----+-----+-----+-----+
  ^
 (Linhas)
-Por que isso funciona? Simplesmente, economiza memória e velocidade, em vez de uma estrutura complexa
+Por que isso funciona? Simplesmente, economiza e velocidade, em vez de uma estrutura complexa
 temos uma estrutura simples.
 
 */
