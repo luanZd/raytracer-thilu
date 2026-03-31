@@ -10,17 +10,15 @@ namespace Parser {
 void parse(const std::string& filename) {
     pugi::xml_document doc;
 
-    // Corrigido: sem aspas! Passamos diretamente o const char* da string
     pugi::xml_parse_result result = doc.load_file(filename.c_str());
 
-    // O teu Try-Catch/Throw (Excelente prática!)
     if (!result) {
         throw std::runtime_error(std::string("Erro ao carregar XML: ") + result.description());
     }
 
     std::cout << "[Parser] Ficheiro XML carregado com sucesso!\n";
 
-    // 1. Encontrar a raiz (A nossa marca)
+    // 1. Encontrar a raiz (RAYTHILU)
     pugi::xml_node raythilu = doc.child("RAYTHILU");
     if (!raythilu) {
         throw std::runtime_error("Erro: Tag raiz <RAYTHILU> não encontrada!");
