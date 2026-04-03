@@ -55,11 +55,24 @@ void API::clean_up() {
 
 void API::background(const ParamSet& ps) {
     std::cout << "[API] A processar o Background...\n";
-    // Extrai a cor da caixa mágica do ParamSet
-    Color bg_color = ps.get_color("color");
     
-    // Instancia o objeto real (ajusta ao construtor da tua classe Background)
-    // curr_background = new Background(bg_color); 
+    // Se o XML tiver o canto inferior esquerdo (bl), assumimos que é interpolado!
+    if (ps.count("bl")) {
+        std::vector<Color> colors;
+        // Temos de empurrar as cores para a lista na mesma ordem do nosso Enum (bl, tl, tr, br)
+        colors.push_back(ps.get_color("bl"));
+        colors.push_back(ps.get_color("tl"));
+        colors.push_back(ps.get_color("tr"));
+        colors.push_back(ps.get_color("br"));
+        
+        // Chamamos o teu construtor avançado do std::vector!
+        curr_background = new Background(colors); 
+    } 
+    else {
+        // Se não tiver cantos, procura por "color" (Fundo sólido)
+        Color bg_color = ps.get_color("color");
+        curr_background = new Background(bg_color);
+    }
 }
 
 void API::film(const ParamSet& ps) {
@@ -74,8 +87,8 @@ void API::film(const ParamSet& ps) {
         filename = curr_run_opt.outfile;
     }
 
-    // Instancia o Filme (ajusta ao construtor da tua classe Film)
-    // curr_film = new Film(x_res, y_res, filename);
+
+     curr_film = new Film(x_res, y_res, filename);
 }
 
 void API::camera(const ParamSet& ps) {
@@ -86,8 +99,6 @@ void API::camera(const ParamSet& ps) {
 void API::render() {
     std::cout << "[API] A iniciar o processo de Renderização!\n";
 
-    // Proteção: Só podemos renderizar se tivermos um filme e um fundo!
-    /* Descomenta isto quando os teus objetos estiverem a ser instanciados acima
     if (!curr_film || !curr_background) {
         std::cerr << "[ERRO] Cena incompleta! Falta o Film ou o Background.\n";
         return;
@@ -96,24 +107,24 @@ void API::render() {
     int width = curr_film->get_width();
     int height = curr_film->get_height();
 
-    // O Main Loop descrito no README (Passo 5)
-    // Percorre cada píxel da imagem (linhas e colunas)
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
             
-            // Mais tarde: Ray r = curr_camera->generate_ray(x, y);
+            // 1. Converter (x, y) para (u, v) normalizados (0.0 até 1.0)
+            // Dividimos pelo (tamanho - 1) para que o último píxel seja exatamente 1.0
+            float u = static_cast<float>(x) / static_cast<float>(width - 1);
+            float v = static_cast<float>(y) / static_cast<float>(height - 1);
             
-            // Para já, apenas amostramos a cor do fundo!
-            Color pixel_color = curr_background->sample(x, y);
+            // 2. Pedir a cor misturada ao teu Background usando o U e o V!
+            // (Nota: se no teu ecrã o Y cresce para baixo, mas a matemática do lerp
+            // espera que o V cresça para cima, podes usar (1.0f - v) aqui,
+            // mas testa primeiro com 'v' puro para ver se a imagem fica invertida).
+            Color pixel_color = curr_background->sampleUV(u, v);
             
-            // E pintamos essa cor no nosso Array 1D da classe Film
             curr_film->add_sample(x, y, pixel_color);
         }
     }
 
-    // Quando o ciclo terminar, guardamos a matriz no ficheiro PPM
-    curr_film->write_image();
-    */
-    
+    curr_film->write_image(); 
     std::cout << "[API] Imagem renderizada com sucesso!\n";
 }

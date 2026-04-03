@@ -1,6 +1,6 @@
 #include "../parser.hpp"
-//#include "../api.hpp"       
-//#include "../paramset.hpp"  
+#include "../api.hpp"       
+#include "../param.hpp"  
 #include "../../ext/pugixml/src/pugixml.hpp"
 #include <iostream>
 #include <stdexcept>

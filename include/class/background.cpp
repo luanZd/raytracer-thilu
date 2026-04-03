@@ -6,6 +6,14 @@ corners é a mesma coisa, serve apenas para diferenciar se ele está localizado 
 Verifique a .hpp para saber mais
 
 */
+// Implementação do construtor para 1 cor sólida
+Background::Background(const Color& c) {
+    // Como a API só nos deu 1 cor, pintamos os 4 cantos com a mesma cor!
+    corners[bl] = c;
+    corners[tl] = c;
+    corners[tr] = c;
+    corners[br] = c;
+}
 
 Background::Background(const std::vector<Color>& colors) {
     if (colors.size() == 4) {
