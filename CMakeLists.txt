@@ -30,4 +30,6 @@ target_include_directories(rt3 PRIVATE
     ${CMAKE_SOURCE_DIR}/include        # Para encontrares os teus .hpp
     ${CMAKE_SOURCE_DIR}/ext            # Para encontrares o <glm/glm.hpp>
     ${CMAKE_SOURCE_DIR}/ext/pugixml/src # Para encontrares o "pugixml.hpp"
+    ${CMAKE_SOURCE_DIR}/ext/glm # Para encontrares o "pugixml.hpp"
+
 )

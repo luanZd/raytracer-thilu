@@ -1,3 +1,6 @@
+#ifndef RT3_HPP
+#define RT3_HPP
+
 #include <string>
 #include <vector>
 
@@ -9,3 +12,5 @@ struct RunningOpt
   bool quick_render = false;
   std::vector<float> crop_window;
 };
+
+#endif 
