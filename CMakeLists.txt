@@ -16,6 +16,7 @@ set(SOURCES
     include/class/param.cpp
     include/class/parser.cpp
     include/class/util.cpp
+    include/class/api.cpp
     
     # A implementação do Pugixml
     ext/pugixml/src/pugixml.cpp
