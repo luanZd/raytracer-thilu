@@ -2,6 +2,7 @@
 #define RT3_HPP
 
 #include <string>
+#include <glm/glm.hpp>
 #include <vector>
 
 using Point3 = glm::vec3;  
