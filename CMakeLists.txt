@@ -20,6 +20,7 @@ set(SOURCES
     
     # A implementação do Pugixml
     ext/pugixml/src/pugixml.cpp
+    ext/glm/src/glm.cpp
 )
 
 # 4. Criar o nosso programa final chamado "rt3"

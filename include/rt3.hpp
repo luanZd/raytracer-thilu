@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 
+using Point3 = glm::vec3;  
+using Vector3 = glm::vec3;
+
 struct RunningOpt
 {
   std::string infile;
