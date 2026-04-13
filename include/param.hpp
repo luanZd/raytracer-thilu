@@ -42,6 +42,7 @@ public:
     // Retorna uma cor normalizada (ex: color="255 128 0" -> vec3(1.0, 0.5, 0.0))
     Color get_color(const std::string& key, const Color& default_val = Color(0.0f, 0.0f, 0.0f)) const;
 
+
     // Retorna uma lista de números (ex: crop_window="0.0 1.0 0.0 1.0")
     std::vector<float> get_floats(const std::string& key) const;
 };

@@ -20,7 +20,7 @@ public:
     static void background(const ParamSet& ps);
     static void film(const ParamSet& ps);
     static void camera(const ParamSet& ps);
-
+    static void API::lookat(const ParamSet& ps);
     // --- O Coração do Ray Tracer ---
     static void render();
 

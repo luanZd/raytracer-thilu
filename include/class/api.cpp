@@ -1,8 +1,10 @@
+#include <memory>
 #include "../api.hpp"
 #include "../parser.hpp"
 #include "../background.hpp" // Substitui pelos nomes reais dos teus ficheiros
 #include "../film.hpp"       // Substitui pelos nomes reais dos teus ficheiros
-#include <iostream>
+#include "../camera.hpp"
+#include "../ortCamera.hpp"
 
 // Instanciação da variável estática da classe
 RunningOpt API::curr_run_opt;
@@ -13,10 +15,17 @@ RunningOpt API::curr_run_opt;
 // mas APENAS visíveis dentro deste ficheiro api.cpp! É o encapsulamento perfeito.
 // ==============================================================================
 namespace {
-    Background* curr_background = nullQptr;
+    Background* curr_background = nullptr;
     Film* curr_film = nullptr;
-    // Camera* curr_camera = nullptr; // Descomenta quando tiveres a câmara
+    Camera* curr_camera = nullptr; // Descomenta quando tiveres a câmara
+      //std::unique_ptr<Camera> curr_camera = nullptr;
+
+    // Dados temporários do lookat
+    Point3 global_look_from;
+    Point3 global_look_at;
+    Vector3 global_up;
 }
+
 
 // ==============================================================================
 // Implementação dos Métodos da API
@@ -91,11 +100,6 @@ void API::film(const ParamSet& ps) {
      curr_film = new Film(x_res, y_res, filename);
 }
 
-void API::camera(const ParamSet& ps) {
-    std::cout << "[API] A processar a Camera...\n";
-    // TODO: Criar a câmara quando ela for implementada
-}
-
 void API::render() {
     std::cout << "[API] A iniciar o processo de Renderização!\n";
 
@@ -127,4 +131,62 @@ void API::render() {
 
     curr_film->write_image(); 
     std::cout << "[API] Imagem renderizada com sucesso!\n";
+}
+
+void API::lookat(const ParamSet& ps) {
+    std::cout << "[API] A processar o LookAt...\n";
+
+    global_look_from = ps.get_point3("look_from");
+    global_look_at   = ps.get_point3("look_at");
+    global_up        = ps.get_vector3("up");
+}
+
+void API::camera(const ParamSet& ps) {
+    std::cout << "[API] A processar a Camera...\n";
+
+    if (!curr_film) {
+        std::cerr << "[ERRO] Film deve ser definido antes da Camera!\n";
+        return;
+    }
+
+    std::string type = ps.get_string("type", "orthographic");
+
+    int width = curr_film->get_width();
+    int height = curr_film->get_height();
+
+    if (type == "orthographic") {
+
+        std::vector<float> sw = ps.get_float_list("screen_window");
+
+        if (sw.size() != 4) {
+            std::cerr << "[ERRO] screen_window inválido!\n";
+            return;
+        }
+
+        curr_camera = std::make_unique<OrthographicCamera>(
+            global_look_from,
+            global_look_at,
+            global_up,
+            sw[0], sw[1], sw[2], sw[3],
+            width, height
+        );
+    }
+    else if (type == "perspective") {
+
+        float fovy = ps.get_float("fovy", 60.0f);
+        float aspect = static_cast<float>(width) / static_cast<float>(height);
+
+        curr_camera = std::make_unique<PerspectiveCamera>(
+            global_look_from,
+            global_look_at,
+            global_up,
+            fovy,
+            aspect,
+            width,
+            height
+        );
+    }
+    else {
+        std::cerr << "[ERRO] Tipo de camera desconhecido: " << type << "\n";
+    }
 }
