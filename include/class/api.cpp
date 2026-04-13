@@ -13,7 +13,7 @@ RunningOpt API::curr_run_opt;
 // mas APENAS visíveis dentro deste ficheiro api.cpp! É o encapsulamento perfeito.
 // ==============================================================================
 namespace {
-    Background* curr_background = nullptr;
+    Background* curr_background = nullQptr;
     Film* curr_film = nullptr;
     // Camera* curr_camera = nullptr; // Descomenta quando tiveres a câmara
 }
