@@ -1,8 +1,9 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-#include "Primitive.h"
-#include "Param.hpp"
+#include "primitive.h"
+#include "param.hpp"
+#include "rt3.hpp"
 #include <glm/glm.hpp>
 
 class Sphere : public Primitive {

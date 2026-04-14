@@ -1,5 +1,7 @@
 #include "util.hpp"
-#include <algorithm> // Para o tolower no bool
+#include <algorithm> 
+#include <locale> // FALTAVA ISTO!
+#include <sstream>
 
 namespace Util {
 
@@ -19,9 +21,15 @@ namespace Util {
 
     Color parse_color(const std::string& value) {
         std::stringstream ss(value);
-        int r = 0, g = 0, b = 0;
+        // FORÇA O PADRÃO INTERNACIONAL (ignora a vírgula do Linux em PT)
+        ss.imbue(std::locale("C")); 
+        
+        // MUDAMOS PARA FLOAT (estava int r, g, b)
+        float r = 0, g = 0, b = 0; 
+        
         if (ss >> r >> g >> b) {
-            return Color(r / 255.0f, g / 255.0f, b / 255.0f);
+            // JÁ NÃO DIVIDE POR 255!
+            return Color(r, g, b); 
         }
         return Color(0.0f, 0.0f, 0.0f); 
     }
@@ -29,6 +37,10 @@ namespace Util {
     std::vector<float> parse_floats(const std::string& value) {
         std::vector<float> result;
         std::stringstream ss(value);
+        
+        // FORÇA O PADRÃO INTERNACIONAL AQUI TAMBÉM
+        ss.imbue(std::locale("C")); 
+        
         float val;
         while (ss >> val) {
             result.push_back(val);

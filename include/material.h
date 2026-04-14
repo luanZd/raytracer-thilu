@@ -2,6 +2,7 @@
 #define MATERIAL_H
 
 #include "rt3.hpp"
+#include "param.hpp"
 
 class Material {
 public:

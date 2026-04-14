@@ -31,7 +31,7 @@ void parse(const std::string& filename) {
 
         if (node_name == "world_begin") {
             std::cout << "[Parser] A iniciar a cena...\n";
-            continue; // Passa para a próxima tag
+            continue;
         } 
         else if (node_name == "world_end") {
             std::cout << "[Parser] Fim da cena! A chamar o renderizador...\n";
@@ -40,24 +40,41 @@ void parse(const std::string& filename) {
             break; 
         }
 
-        // 3. Se for uma tag normal (film, background, camera), preenchemos o ParamSet
+
         ParamSet ps;
         
         // Iterar por todos os atributos da tag atual (ex: x_res="200" y_res="100")
         for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute()) {
             ps.add(attr.name(), attr.value());
         }
+        
 
-        if (node_name == "film") {
-            API::film(ps);
+        if (node_name == "camera") {
+            API::camera(ps);
         } 
         else if (node_name == "background") {
             API::background(ps);
         } 
-        else if (node_name == "camera") {
-            // API::camera(ps); // Descomenta quando criar o método camera na API
-            std::cout << "[Parser] Aviso: Tag <camera> lida, mas não foi implementada.\n";
+       else if (node_name == "lookat") {
+            API::lookat(ps); 
+        }
+        else if (node_name == "film") {
+            API::film(ps); 
         } 
+        else if (node_name == "material") {
+            API::material(ps); 
+        } 
+        else if (node_name == "object") {
+            std::string type = node.attribute("type").value();
+            ParamSet ps;
+            for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute()) {
+                ps.add(attr.name(), attr.value());
+            }
+
+            if (type == "sphere") {
+                API::sphere(ps); 
+            }
+        }
         if (node_name == "material") {
     ParamSet ps;
     for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute()) {
@@ -82,4 +99,5 @@ else if (node_name == "object") {
     }
 }
 
-} // namespace Parser
+} 
+}// namespace Parser

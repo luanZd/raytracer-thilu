@@ -17,10 +17,14 @@ set(SOURCES
     include/class/parser.cpp
     include/class/util.cpp
     include/class/api.cpp
+    include/class/ray.cpp
+    include/class/ortCamera.cpp
+    include/class/perCamera.cpp
+    include/class/sphere.cpp
     
     # A implementação do Pugixml
     ext/pugixml/src/pugixml.cpp
-    ext/glm/src/glm.cpp
+   # ext/glm/src/glm.cpp
 )
 
 # 4. Criar o nosso programa final chamado "rt3"
