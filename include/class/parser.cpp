@@ -3,6 +3,7 @@
 #include "../param.hpp"  
 #include "../../ext/pugixml/src/pugixml.hpp"
 #include <iostream>
+#include "../sphere.h"
 #include <stdexcept>
 
 namespace Parser {
@@ -57,6 +58,24 @@ void parse(const std::string& filename) {
             // API::camera(ps); // Descomenta quando criar o método camera na API
             std::cout << "[Parser] Aviso: Tag <camera> lida, mas não foi implementada.\n";
         } 
+        if (node_name == "material") {
+    ParamSet ps;
+    for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute()) {
+        ps.add(attr.name(), attr.value());
+    }
+    // API::material cria um material e guarda-o como "current_material"
+    API::material(ps); 
+} 
+else if (node_name == "object") {
+    std::string type = node.attribute("type").value();
+    ParamSet ps;
+    for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute()) {
+        ps.add(attr.name(), attr.value());
+    }
+
+    if (type == "sphere") {
+        API::sphere(ps); 
+    }
         else {
             std::cerr << "[Parser] Aviso: Tag desconhecida ignorada: <" << node_name << ">\n";
         }
